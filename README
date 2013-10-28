@@ -18,14 +18,14 @@ wget --no-check-certificate https://github.com/eightdog/laika/archive/1.0.0-beta
 
 tar -xzf laika-1.0.0-beta.tar.gz
 
-cd laika-1.0.0/build
+cd laika-laika-1.0.0/build
 
 chmod a+x build.sh 
 
 ./build.sh
 
 
-Then test by browsing to laika-1.0.0/source/examples/py_test
+Then test by browsing to laika-laika-1.0.0/source/examples/py_test
 
 and type:
 
