@@ -1,0 +1,32 @@
+Laika Installation
+==================
+
+First Install LIBFTDI:
+
+apt-get update
+
+apt-get upgrade
+
+apt-get install libftdi-dev
+
+Install Laika by typing:
+=======================
+
+cd~
+
+wget --no-check-certificate https://github.com/eightdog/laika/archive/1.0.0-beta.tar.gz
+
+cd laika-1.0.0/build
+
+chmod a+x build.sh 
+
+./build.sh
+
+
+Then test by browsing to laika-1.0.0/source/examples/py_test
+
+and type:
+
+python example_1.py
+
+This should run the LED's and verify a connection.
