@@ -1,5 +1,14 @@
+SHELL = /bin/sh
+
 DESTDIR=
-PREFIX=/usr
+PREFIX=$(DESTDIR)/usr/local
+INCLUDEDIR=$(PREFIX)/include
+LIBDIR=$(PREFIX)/lib
+RULESDIR=/etc/udev/rules.d
+SRCDIR=../source
+
+.SUFFIXES:
+.SUFFIXES: .c .o
 
 VER_MAJOR=1
 VER_MINOR=0
@@ -8,8 +17,6 @@ VER_BUG=0
 CC = gcc
 LIBS = -lc -lftdi -lusb
 DYNAMIC=liblaika.so
-
-SRCDIR=../source
 
 LIB_MAJOR = $(DYNAMIC).$(VER_MAJOR)
 LIB_MINOR = $(LIB_MAJOR).$(VER_MINOR)
@@ -59,35 +66,38 @@ clean:
 .PHONEY: install-headers
 install-headers:
 	@echo "[Install Headers]"
-	@mkdir $(DESTDIR)$(PREFIX)/include/laika
-	@install -m 0775 -d										$(DESTDIR)$(PREFIX)/include/laika
-	@install -m 0644 $(SRCDIR)/c_api/include/laika/laika.h	$(DESTDIR)$(PREFIX)/include/laika
-	@install -m 0644 $(SRCDIR)/c_api/include/laika/exp.h	$(DESTDIR)$(PREFIX)/include/laika
-	@install -m 0644 $(SRCDIR)/c_api/include/laika/luna.h	$(DESTDIR)$(PREFIX)/include/laika
+	@mkdir $(INCLUDEDIR)/laika
+	@install -m 0775 -d										$(INCLUDEDIR)/laika
+	@install -m 0644 $(SRCDIR)/c_api/include/laika/laika.h	$(INCLUDEDIR)/laika
+	@install -m 0644 $(SRCDIR)/c_api/include/laika/exp.h	$(INCLUDEDIR)/laika
+	@install -m 0644 $(SRCDIR)/c_api/include/laika/luna.h	$(INCLUDEDIR)/laika
 	@echo "[Headers Installed]"
 	
 .PHONEY: install
 install: $(DYNAMIC) install-headers
 	@echo "[Install Dynamic Library]"
-	@install -m 0755 -d										$(DESTDIR)$(PREFIX)/lib
-	@install -m 0755 $(LIB_RELEASE)							$(DESTDIR)$(PREFIX)/lib
-	@ln -sf $(DESTDIR)$(PREFIX)/lib/$(LIB_RELEASE)			$(DESTDIR)/lib/$(DYNAMIC)
-	@ln -sf $(DESTDIR)/lib/$(DYNAMIC)						$(DESTDIR)/lib/$(LIB_MAJOR)
-	@ln -sf $(DESTDIR)/lib/$(LIB_MAJOR)						$(DESTDIR)/lib/$(LIB_MINOR)
+	@install -m 0755 -d										$(LIBDIR)
+	@install -m 0755 $(LIB_RELEASE)							$(LIBDIR)
+	@ln -sf $(LIBDIR)/$(LIB_RELEASE)						$(LIBDIR)/$(DYNAMIC)
+	@ln -sf $(LIBDIR)/$(DYNAMIC)							$(LIBDIR)/$(LIB_MAJOR)
+	@ln -sf $(LIBDIR)/$(LIB_MAJOR)							$(LIBDIR)/$(LIB_MINOR)
 	@echo "[Dynamic Library Installed]"
+	@echo "[Installing FTDI udev Rule]"
+	@sudo cp ../rules/99-lklibftdi.rules $(RULESDIR)/99-lklibftdi.rules
 	@ldconfig
 
 .PHONEY: uninstall
 uninstall:
 	@echo "[Uninstall Laika]"
-	@rm -f $(PREFIX)/include/laika/laika.h
-	@rm -f $(PREFIX)/include/laika/exp.h
-	@rm -f $(PREFIX)/include/laika/luna.h
-	@rm -f $(PREFIX)/lib/$(LIB_RELEASE)
-	@rm -f $(PREFIX)/lib/$(DYNAMIC)
-	@rm -f $(PREFIX)/lib/$(LIB_MAJOR)
-	@rm -f $(PREFIX)/lib/$(LIB_MINOR)
-	@rm -f $(PREFIX)/include/laika -R
+	@rm -f $(INCLUDEDIR)/laika/laika.h
+	@rm -f $(INCLUDEDIR)/laika/exp.h
+	@rm -f $(INCLUDEDIR)/laika/luna.h
+	@rm -f $(LIBDIR)/$(LIB_RELEASE)
+	@rm -f $(LIBDIR)/$(DYNAMIC)
+	@rm -f $(LIBDIR)/$(LIB_MAJOR)
+	@rm -f $(LIBDIR)/$(LIB_MINOR)
+	@rm -f $(INCLUDEDIR)/laika -R
+	@rm -f $(RULESDIR)/99-lklibftdi.rules
 
 laika.o: $(SRCDIR)/c_api/include/laika/laika.h
 exp.o: $(SRCDIR)/c_api/include/laika/exp.h

@@ -1,33 +1,62 @@
 #!/bin/sh
 
 check_make_ok() {
-  if [ $? != 0 ]; then
-    echo ""
-    echo "Make Failed..."
-    echo "Please check the messages and fix any problems. If you're still stuck,"
-    echo "then please email all the output and as many details as you can to"
-    echo "  project-laika.com"
-    echo ""
-    exit 1
-  fi
+	if [ $? != 0 ]; then
+		echo ""
+		echo "Make Failed..."
+		echo "Please check the messages and fix any problems. If you're still stuck,"
+		echo "then please email all the output and as many details as you can to"
+		echo "  www.project-laika.com"
+		echo ""
+		exit 1
+	fi
 }
 
+f_exit(){
+	echo ""
+	echo "Optional: Add a non-default 'otheruser' after the command (default is:pi)."
+	echo "i.e. sudo ./build.sh otheruser"
+	echo ""
+	exit
+}
+
+echo "Running Installer"
+if [ -z $1 ]; then
+	HDIR="/home/pi"
+	USERID="pi"
+	GROUPID="pi"
+else
+	HDIR=/home/$1
+	USERID=`id -n -u $1`
+	GROUPID=`id -n -g $1`
+fi
+
+#Confirm if install should continue with default Pi user or inform about command-line option.
+echo ""
+echo "Install Details:"
+echo "Home Directory: "$HDIR
+echo "User: "$USERID
+echo "Group: "$USERID
+echo ""
+if [ ! -d "$HDIR" ]; then
+	echo ""; 
+	echo "The home directory does not exist!";f_exit;
+fi
+
 if [ x$1 = "xclean" ]; then
-  echo -n "laika:   "	; make clean
-  exit
+	echo -n "laika:   "	; make clean
+	exit
 fi
 
 if [ x$1 = "xexamples" ]; then
-  echo -n "laika:   "	; make examples -B
-  exit
+	echo -n "laika:   "	; make examples -B
+	exit
 fi
 
 if [ x$1 = "xuninstall" ]; then
-  echo -n "laika: " ; sudo make uninstall
-  sudo rm -f /etc/udev/rules.d/99-lklibftdi.rules
-  sudo rm -f /home/pi/.local/lib/python2.7/site-packages/laika -R
-  echo "laika: [Uninstalled]" 
-  exit
+	echo -n "laika: " ; sudo make uninstall
+	echo "laika: [Uninstalled]" 
+	exit
 fi
 
 echo "Laika Build script"
@@ -44,15 +73,10 @@ check_make_ok
 sudo make clean
 check_make_ok
 
-echo [Install FTDI udev Rule]
-sudo cp ../rules/99-lklibftdi.rules /etc/udev/rules.d/99-lklibftdi.rules
-
-echo [Install Python Modules to /home/pi/.local/lib/python2.7/site-packages]
-sudo cp -R ../source/py_api/laika /home/pi/.local/lib/python2.7/site-packages
-
 echo
 echo All Done.
 echo ""
-echo "NOTE: You can now run the examples: browse to source/examples/py_test and type: python example_1.py"
+echo "NOTE: You can now run the examples: type: cd ../source/examples/py_test"
+echo "and then type: python example_1.py"
 echo 
 echo
