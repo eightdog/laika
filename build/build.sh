@@ -73,8 +73,8 @@ check_make_ok
 sudo make clean
 check_make_ok
 
-echo [Install Python Modules to /home/pi/.local/lib/python2.7/site-packages]
-sudo cp -R ../source/py_api/laika /home/pi/.local/lib/python2.7/site-packages
+echo [Install Python Modules to /usr/local/lib/python2.7/site-packages]
+sudo cp -R ../source/py_api/laika /usr/local/lib/python2.7/site-packages
 
 echo
 echo All Done.
