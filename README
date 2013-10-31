@@ -32,7 +32,7 @@ Now download the Laika software
 
 Now decompress the archive
 
-  tar -xzf laika-1.0.0.tar.gz
+  tar -xzf 1.0.0.tar.gz
 
 We need to run the build script so change directory
 
