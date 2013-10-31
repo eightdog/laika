@@ -4,6 +4,7 @@ Laika Installation
 As this is the first release of the Laika software the installation process is a bit more manual
 than you may be use to. Don't worry, it should be quite straightforward. Just follow these steps:
 
+Log into your pi: default user: pi password: raspberry
 
 First Install LIBFTDI:
 =====================
@@ -52,9 +53,11 @@ And finally, reboot
 
 Then test by browsing to laika-1.0.0/source/examples/py_test
 
+  cd laika-1.0.0/source/eaxamples/py_test
+
 plug in and power on your Explorer and type:
 
-python example_1.py
+  python example_1.py
 
 This should run the LED's to verify a connection. You can go on to try the other examples and also load the Scratch examples.
 
