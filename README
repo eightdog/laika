@@ -1,34 +1,59 @@
 Laika Installation
 ==================
 
+As this is the first release of the Laika software the installation process is a bit more manual
+than you may be use to. Don't worry, it should be quite straightforward. Just follow these steps:
+
+
 First Install LIBFTDI:
+=====================
 
-apt-get update
+I recommend updating your system using the following two commands (it make take some time):
 
-apt-get upgrade
+  apt-get update
 
-apt-get install libftdi-dev
+  apt-get upgrade
 
-Install Laika by typing:
-=======================
+Now install libftdi- it is a USB driver
 
-cd~
-
-wget --no-check-certificate https://github.com/eightdog/laika/archive/1.0.0-beta.tar.gz
-
-tar -xzf laika-1.0.0-beta.tar.gz
-
-cd laika-laika-1.0.0/build
-
-chmod a+x build.sh 
-
-./build.sh
+  apt-get install libftdi-dev
 
 
-Then test by browsing to laika-laika-1.0.0/source/examples/py_test
+Install Laika
+=============
 
-and type:
+Change to your user direcory (you can create an installation direcory if you like but it's not necessary)
+
+  cd~
+
+Now download the Laika software
+
+  wget --no-check-certificate https://github.com/eightdog/laika/archive/1.0.0.tar.gz
+
+Now decompress the archive
+
+  tar -xzf laika-1.0.0.tar.gz
+
+We need to run the build script so change directory
+
+  cd laika-1.0.0/build
+
+And make the build scipt executable
+
+  chmod a+x build.sh 
+
+Now run the build script
+
+  ./build.sh
+
+And finally, reboot
+
+  sudo shutdown -r now
+
+Then test by browsing to laika-1.0.0/source/examples/py_test
+
+plug in and power on your Explorer and type:
 
 python example_1.py
 
-This should run the LED's and verify a connection.
+This should run the LED's to verify a connection. You can go on to try the other examples and also load the Scratch examples.
