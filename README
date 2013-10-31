@@ -53,7 +53,7 @@ And finally, reboot
 
 Then test by browsing to laika-1.0.0/source/examples/py_test
 
-  cd laika-1.0.0/source/eaxamples/py_test
+  cd laika-1.0.0/source/examples/py_test
 
 plug in and power on your Explorer and type:
 
