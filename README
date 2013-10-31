@@ -57,3 +57,16 @@ plug in and power on your Explorer and type:
 python example_1.py
 
 This should run the LED's to verify a connection. You can go on to try the other examples and also load the Scratch examples.
+
+To Run Scratch
+==============
+
+Start the desktop environment by typing the following on the command-line:
+
+  startx
+  
+You will notice a laika-scratch link on the Desktop which starts Scratch with Laika running in the background.
+
+If you click this link and it throws an error message as it might on the first attempt after install, simply reboot.
+
+
