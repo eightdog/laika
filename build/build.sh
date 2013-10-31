@@ -73,8 +73,12 @@ check_make_ok
 sudo make clean
 check_make_ok
 
-echo [Install Python Modules to /usr/local/lib/python2.7/dist-packages]
+echo [Install Python Packages to /usr/local/lib/python2.7/dist-packages]
 sudo cp -R ../source/py_api/laika /usr/local/lib/python2.7/dist-packages
+sudo cp -R ../source/py_api/laika_scratch /usr/local/lib/python2.7/dist-packages
+
+cd ../source/scratch
+make USERID=$USERID GROUPID=$GROUPID HDIR=$HDIR
 
 echo
 echo All Done.
@@ -82,4 +86,5 @@ echo ""
 echo "NOTE: You can now run the examples: type: cd ../source/examples/py_test"
 echo "and then type: python example_1.py"
 echo 
+echo "Please restart before running C examples: sudo shutdown -R now"
 echo

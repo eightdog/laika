@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Exec=./laika_scratch/laika_scratch_run_v1.0.0.sh
+Icon=scratch
+Terminal=false
+Name=laika_scratch
+Comment= Programming system and content development tool
+Categories=Application;Education;Development;
+MimeType=application/x-scratch-project
