@@ -19,6 +19,10 @@
 #
 #    You should have received a copy of the GNU Lesser General Public License
 #    along with Laika.  If not, see <http://www.gnu.org/licenses/>.
+#
+#   Change Log:
+#               v1.0.0 - Initial release                   
+#               v1.1.0 - Added lk.init() error trap
 # ***********************************************************************
 import time
 import sys
@@ -32,7 +36,10 @@ ack = [0]
 buffer = [None] * 32
 running = True
 
-lk.init()
+ret = lk.init()
+if (ret == lk.EXIT_FAILURE):
+    print 'could not open Laika device. Exiting...'
+    sys.exit()
 
 ret = exp.dout_all(lk.MODULE_ONE, lk.OFF, ack)
 
@@ -48,8 +55,8 @@ while running:
 	adc_convert_1 = (buffer[0] / 4)
 	adc_convert_2 = (buffer[1] / 4)
 	
-	print("Motor Speed 0:", adc_convert_1)
-	print("Motor Speed 0:", adc_convert_1)
+	print("Motor Speed 1:", adc_convert_1)
+	print("Motor Speed 2:", adc_convert_2)
 	
 	ret = exp.din(lk.MODULE_ONE, buffer);
 	button_state = buffer[0];

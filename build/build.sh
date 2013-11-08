@@ -86,5 +86,5 @@ echo ""
 echo "NOTE: You can now run the examples: type: cd ../source/examples/py_test"
 echo "and then type: python example_1.py"
 echo 
-echo "Please restart before running C examples: sudo shutdown -R now"
+echo "Please restart before running C examples: sudo reboot"
 echo

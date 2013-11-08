@@ -32,7 +32,6 @@ int ret;
 
 int lk_init(void)
 {
-
     if (ftdi_init(&ftdic) < 0)
     {
         fprintf(stderr, "ftdi_init failed\n");

@@ -19,6 +19,11 @@
 #
 #    You should have received a copy of the GNU Lesser General Public License
 #    along with Laika.  If not, see <http://www.gnu.org/licenses/>.
+#
+#   Change Log:
+#   V1.0.0  - Initial Release
+#   V1.1.0  - Enabled PWM speed control functionality
+#           - Add exp_dout_x function calls to allow individual output pin control 
 # ***********************************************************************
 from array import *
 import socket
@@ -26,11 +31,10 @@ import socket
 from laika import lk
 from laika.explorer import exp
 
+OUTPUT_PINS = 7
+
 ack = [0]
 buffer = [None] * 32
-
-motor_1_speed = 255
-motor_2_speed = 255
 
 class lk_comms:
 
@@ -43,7 +47,26 @@ class lk_comms:
     def set_socket(self, socket_in):
         self.this_socket = socket_in
         
+class motor_speed:
+
+    def __init__(self):
+        self.speed_1 = 255
+        self.speed_2 = 255
+
+    def set_motor_1_speed(self, speed_in):
+        self.speed_1 = speed_in
+        
+    def set_motor_2_speed(self, speed_in):
+        self.speed_2 = speed_in
+        
+    def get_motor_1_speed(self):
+        return self.speed_1
+        
+    def get_motor_2_speed(self):
+        return self.speed_2
+        
 this_comms = lk_comms(None)
+this_motor_speed = motor_speed()
 
 def init(socket_in):
     this_comms.set_socket(socket_in)
@@ -51,14 +74,14 @@ def init(socket_in):
 
 def exit():
     lk.exit()
-
+    
 def broadcast(broadcast_in):
 
     if  'exp_motor_1_fwd' in broadcast_in:
-        lk_ret = exp.motors(lk.MODULE_ONE, exp.MOTOR_1, exp.MOTOR_FORWARD, motor_1_speed, ack)
+        lk_ret = exp.motors(lk.MODULE_ONE, exp.MOTOR_1, exp.MOTOR_FORWARD, this_motor_speed.get_motor_1_speed(), ack)
         
     if  'exp_motor_1_rev' in broadcast_in:
-        lk_ret = exp.motors(lk.MODULE_ONE, exp.MOTOR_1, exp.MOTOR_REVERSE, motor_1_speed, ack)
+        lk_ret = exp.motors(lk.MODULE_ONE, exp.MOTOR_1, exp.MOTOR_REVERSE, this_motor_speed.get_motor_1_speed(), ack)
 
     if  'exp_motor_1_stop' in broadcast_in:
         lk_ret = exp.motors(lk.MODULE_ONE, exp.MOTOR_1, exp.MOTOR_STOP, 0, ack)
@@ -67,10 +90,10 @@ def broadcast(broadcast_in):
         lk_ret = exp.motors(lk.MODULE_ONE, exp.MOTOR_1, exp.MOTOR_BRAKE, 0, ack)
         
     if  'exp_motor_2_fwd' in broadcast_in:
-        lk_ret = exp.motors(lk.MODULE_ONE, exp.MOTOR_2, exp.MOTOR_FORWARD, motor_2_speed, ack)
+        lk_ret = exp.motors(lk.MODULE_ONE, exp.MOTOR_2, exp.MOTOR_FORWARD, this_motor_speed.get_motor_2_speed(), ack)
         
     if  'exp_motor_2_rev' in broadcast_in:
-        lk_ret = exp.motors(lk.MODULE_ONE, exp.MOTOR_2, exp.MOTOR_REVERSE, motor_2_speed, ack)
+        lk_ret = exp.motors(lk.MODULE_ONE, exp.MOTOR_2, exp.MOTOR_REVERSE, this_motor_speed.get_motor_2_speed(), ack)
         
     if  'exp_motor_2_stop' in broadcast_in:
         lk_ret = exp.motors(lk.MODULE_ONE, exp.MOTOR_2, exp.MOTOR_STOP, 0, ack)
@@ -78,6 +101,29 @@ def broadcast(broadcast_in):
     if  'exp_motor_2_brake' in broadcast_in:
         lk_ret = exp.motors(lk.MODULE_ONE, exp.MOTOR_2, exp.MOTOR_BRAKE, 0, ack)
         
+    print broadcast_in
+    for i in range(OUTPUT_PINS):
+        if (('exp_dout_pin' + str(i)) in broadcast_in):
+            output_pos = broadcast_in.find('exp_dout_pin' + str(i))
+            data_list = broadcast_in[(output_pos+12):].split('_', 2)
+            pin_value = int(data_list[0], 10)
+            pin_state = data_list[1]
+            pin_state = pin_state[:4]
+            print data_list
+            print pin_value
+            print pin_state
+            if (('high' in pin_state) or ('on' in pin_state) or ('1' in pin_state)):
+                print ('Pin Value On is: ' + str(pin_value))
+                lk_ret = exp.dout_x(lk.MODULE_ONE, pin_value, 1, ack)
+                print str(lk_ret)
+                print str(ack[0])
+            else:
+                if (('low' in pin_state) or ('off' in pin_state) or ('0' in pin_state)):
+                    print ('Pin Value Off is: ' + str(pin_value))
+                    lk_ret = exp.dout_x(lk.MODULE_ONE, pin_value, 0, ack)
+                    print str(lk_ret)
+                    print str(ack[0])
+       
     #Explorer Analogue ----------------------------------------------------------------------------------------------- 
     if  'exp_ain_0' in broadcast_in:
         exp.ain(lk.MODULE_ONE, buffer)
@@ -109,35 +155,35 @@ def sensor_update(sensor_update_in):
         sensor_value = sensor_update_in[(output_pos+13):].split()
         int_value = int(sensor_value[0], 2)
         if int_value in range(127):
-            exp.dout_all(lk.MODULE_ONE, int_value, ack)
+            lk_ret = exp.dout_all(lk.MODULE_ONE, int_value, ack)
 
     if 'exp_dout_hex' in sensor_update_in:
         output_pos = sensor_update_in.find('exp_dout_hex')
         sensor_value = sensor_update_in[(output_pos+13):].split()
         int_value = int(sensor_value[0], 16)
         if int_value in range(127):
-            exp.dout_all(lk.MODULE_ONE, int_value, ack)
+            lk_ret = exp.dout_all(lk.MODULE_ONE, int_value, ack)
                         
     if 'exp_dout_int' in sensor_update_in:
         output_pos = sensor_update_in.find('exp_dout_int')
         sensor_value = sensor_update_in[(output_pos+13):].split()
         int_value = int(sensor_value[0], 10)
         if int_value in range(127):
-            exp.dout_all(lk.MODULE_ONE, int_value, ack)
+            lk_ret = exp.dout_all(lk.MODULE_ONE, int_value, ack)
                         
     if 'exp_motor_1_spd' in sensor_update_in:
         output_pos = sensor_update_in.find('exp_motor_1_spd')
-        sensor_value = sensor_update_in[(output_pos+17):].split()
+        sensor_value = sensor_update_in[(output_pos+16):].split()
         int_value = int(sensor_value[0], 10)
-        if int_value in range(255):
-            motor_1_speed = int_value
+        if int_value in range(256):
+            this_motor_speed.set_motor_1_speed(int_value)
             
     if 'exp_motor_2_spd' in sensor_update_in:
         output_pos = sensor_update_in.find('exp_motor_2_spd')
-        sensor_value = sensor_update_in[(output_pos+17):].split()
+        sensor_value = sensor_update_in[(output_pos+16):].split()
         int_value = int(sensor_value[0], 10)
-        if int_value in range(255):
-            motor_2_speed = int_value
+        if int_value in range(256):
+            this_motor_speed.set_motor_2_speed(int_value)
                         
     if  'lk_check_for_ack' in sensor_update_in:
         sensor_name = 'lk_ack'

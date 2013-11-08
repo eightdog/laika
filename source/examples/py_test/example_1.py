@@ -28,10 +28,14 @@ from laika.explorer import exp
 
 count = 0
 ack = [0]
+ret = 0
 buffer = [None] * 32
 running = True
 
-lk.init()
+ret = lk.init()
+if (ret == lk.EXIT_FAILURE):
+    print 'could not open Laika device. Exiting...'
+    sys.exit()
 
 print "Press any button to stop"
 

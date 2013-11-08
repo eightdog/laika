@@ -19,13 +19,17 @@
 #
 #    You should have received a copy of the GNU Lesser General Public License
 #    along with Laika.  If not, see <http://www.gnu.org/licenses/>.
+#
+#   Change Log:
+#               v1.0.0 - Initial release                   
+#               v1.1.0 - Removed present() function
 # ***********************************************************************
 import ctypes 
 laika = ctypes.CDLL('liblaika.so')
 from ctypes import *
 
-EXIT_FAILURE = 0
-EXIT_SUCCESS = 1
+EXIT_FAILURE = 1
+EXIT_SUCCESS = 0
 MODULE_ONE = 0
 MODULE_TWO = 1
 MODULE_THREE = 2
@@ -33,17 +37,12 @@ MODULE_FOUR = 3
 ON = 1
 OFF = 0
 
-present=0
-
 def init():
-	present = laika.lk_init()
-	is_present()
+    lk_ret = laika.lk_init()
+    return lk_ret
 
-def is_present():
-	return present
-	
 def exit():
-	lk_ret = laika.lk_exit()
-	return lk_ret
+    lk_ret = laika.lk_exit()
+    return lk_ret
 
 

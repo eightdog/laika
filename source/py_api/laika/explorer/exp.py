@@ -19,6 +19,9 @@
 #
 #    You should have received a copy of the GNU Lesser General Public License
 #    along with Laika.  If not, see <http://www.gnu.org/licenses/>.
+#
+#    Change Log:
+#               v1.0.0 - Initial release                   
 # ***********************************************************************
 import ctypes 
 laika = ctypes.CDLL('liblaika.so')
