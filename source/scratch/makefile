@@ -66,6 +66,8 @@ install:
 	@cp lk_exp_example_1.sb $(HDIR)/Documents/Scratch\ Projects 
 	@cp lk_exp_example_2.sb $(HDIR)/Documents/Scratch\ Projects
 	@cp lk_exp_example_3.sb $(HDIR)/Documents/Scratch\ Projects
+    @cp lk_exp_example_4.sb $(HDIR)/Documents/Scratch\ Projects
+    @cp lk_exp_example_5.sb $(HDIR)/Documents/Scratch\ Projects
 
 	@echo ""
 	@echo "Finished."
