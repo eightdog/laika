@@ -24,6 +24,7 @@
 #   V1.0.0  - Initial Release
 #   V1.1.0  - Enabled PWM speed control functionality
 #           - Add exp_dout_x function calls to allow individual output pin control 
+#   V1.1.1  - Changed exp_dout to only use first exp_dout instance, and added error trap for incorrect casts in sensor-updates
 # ***********************************************************************
 from array import *
 import socket
@@ -150,38 +151,57 @@ def broadcast(broadcast_in):
 
 def sensor_update(sensor_update_in):
 
-    if 'exp_dout_bin' in sensor_update_in:
-        output_pos = sensor_update_in.find('exp_dout_bin')
-        sensor_value = sensor_update_in[(output_pos+13):].split()
-        int_value = int(sensor_value[0], 2)
-        if int_value in range(127):
-            lk_ret = exp.dout_all(lk.MODULE_ONE, int_value, ack)
+    if 'exp_dout' in sensor_update_in:
+        
+        type_pos = sensor_update_in.find('exp_dout')
+        type_str = sensor_update_in[(type_pos+8):].split(' ',2)
+        print str(type_pos)
+        print type_str
+        if '_bin' in type_str:
+            try:
+                int_value = int(type_str[1], 2)
+            except:
+                print 'error with binary type cast'
+                return
 
-    if 'exp_dout_hex' in sensor_update_in:
-        output_pos = sensor_update_in.find('exp_dout_hex')
-        sensor_value = sensor_update_in[(output_pos+13):].split()
-        int_value = int(sensor_value[0], 16)
-        if int_value in range(127):
-            lk_ret = exp.dout_all(lk.MODULE_ONE, int_value, ack)
-                        
-    if 'exp_dout_int' in sensor_update_in:
-        output_pos = sensor_update_in.find('exp_dout_int')
-        sensor_value = sensor_update_in[(output_pos+13):].split()
-        int_value = int(sensor_value[0], 10)
-        if int_value in range(127):
+        if '_hex' in type_str:
+            try:
+                int_value = int(type_str[1], 16)
+            except:
+                print 'error with hexidecimal type cast'
+                return
+                            
+        if '_int' in type_str:
+            try:
+                int_value = int(type_str[1], 10)
+            except:
+                print 'error with integer type cast'
+                return
+
+        if int_value in range(128):
             lk_ret = exp.dout_all(lk.MODULE_ONE, int_value, ack)
                         
     if 'exp_motor_1_spd' in sensor_update_in:
         output_pos = sensor_update_in.find('exp_motor_1_spd')
         sensor_value = sensor_update_in[(output_pos+16):].split()
-        int_value = int(sensor_value[0], 10)
+        try:
+            int_value = int(sensor_value[0], 10)
+        except:
+            print 'error with integer type cast'
+            return
+        
         if int_value in range(256):
             this_motor_speed.set_motor_1_speed(int_value)
             
     if 'exp_motor_2_spd' in sensor_update_in:
         output_pos = sensor_update_in.find('exp_motor_2_spd')
         sensor_value = sensor_update_in[(output_pos+16):].split()
-        int_value = int(sensor_value[0], 10)
+        try:
+            int_value = int(sensor_value[0], 10)
+        except:
+            print 'error with integer type cast'
+            return
+        
         if int_value in range(256):
             this_motor_speed.set_motor_2_speed(int_value)
                         
