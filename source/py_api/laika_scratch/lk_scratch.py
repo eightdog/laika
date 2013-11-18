@@ -24,7 +24,8 @@
 #   V1.0.0  - Initial Release
 #   V1.1.0  - Enabled PWM speed control functionality
 #           - Add exp_dout_x function calls to allow individual output pin control 
-#   V1.1.1  - Changed exp_dout to only use first exp_dout instance, and added error trap for incorrect casts in sensor-updates
+#   V1.2.0  - Changed exp_dout to only use first exp_dout instance, and added error trap for incorrect casts in sensor-updates
+#           - Fixed bug that prevent value 127 being written to digital port
 # ***********************************************************************
 from array import *
 import socket
