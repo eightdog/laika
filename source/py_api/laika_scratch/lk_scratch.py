@@ -110,34 +110,34 @@ def broadcast(broadcast_in):
             pin_value = int(data_list[0], 10)
             pin_state = data_list[1]
             pin_state = pin_state[:4]
-            print data_list
-            print pin_value
-            print pin_state
+            #print data_list
+            #print pin_value
+            #print pin_state
             if (('high' in pin_state) or ('on' in pin_state) or ('1' in pin_state)):
-                print ('Pin Value On is: ' + str(pin_value))
+                #print ('Pin Value On is: ' + str(pin_value))
                 lk_ret = exp.dout_x(lk.MODULE_ONE, pin_value, 1, ack)
-                print str(lk_ret)
-                print str(ack[0])
+                #print str(lk_ret)
+                #print str(ack[0])
             else:
                 if (('low' in pin_state) or ('off' in pin_state) or ('0' in pin_state)):
-                    print ('Pin Value Off is: ' + str(pin_value))
+                    #print ('Pin Value Off is: ' + str(pin_value))
                     lk_ret = exp.dout_x(lk.MODULE_ONE, pin_value, 0, ack)
-                    print str(lk_ret)
-                    print str(ack[0])
+                    #print str(lk_ret)
+                    #print str(ack[0])
        
     #Explorer Analogue ----------------------------------------------------------------------------------------------- 
     if  'exp_ain_0' in broadcast_in:
         exp.ain(lk.MODULE_ONE, buffer)
         sensor_name = 'lk_exp_ain_0'
         bcast_str = 'sensor-update "%s" %d' % (sensor_name, buffer[0])
-        print bcast_str
+        #print bcast_str
         send_scratch_command(bcast_str)
         
     if  'exp_ain_1' in broadcast_in:
         exp.ain(lk.MODULE_ONE, buffer)
         sensor_name = 'lk_exp_ain_1'
         bcast_str = 'sensor-update "%s" %d' % (sensor_name, buffer[1])
-        print bcast_str
+        #print bcast_str
         send_scratch_command(bcast_str)        
         
     #Explorer Digital ----------------------------------------------------------------------------------------------- 
@@ -145,7 +145,7 @@ def broadcast(broadcast_in):
         exp.din(lk.MODULE_ONE, buffer) 
         sensor_name = 'lk_exp_din'
         bcast_str = 'sensor-update "%s" %d' % (sensor_name, buffer[0])
-        print bcast_str
+        #print bcast_str
         send_scratch_command(bcast_str)
 
 
@@ -155,8 +155,8 @@ def sensor_update(sensor_update_in):
         
         type_pos = sensor_update_in.find('exp_dout')
         type_str = sensor_update_in[(type_pos+8):].split(' ',2)
-        print str(type_pos)
-        print type_str
+        #print str(type_pos)
+        #print type_str
         if '_bin' in type_str:
             try:
                 int_value = int(type_str[1], 2)
