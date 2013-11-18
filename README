@@ -1,9 +1,14 @@
+The documentation for this project is being put together now and will be updated freqently over the coming weeks.
+There is a Google Groups Q&A forum here, or email laika-users@googlegroups.com
+
 Laika Installation
 ==================
 
 As this is the first release of the Laika software the installation process is a bit more manual
-than you may be use to. Don't worry, it should be quite straightforward. Just follow these steps:
+than you may be use to. Don't worry, it should be quite straightforward. We are working hard to bring you a single installation package but for now, just follow these steps:
 
+If you are new to the Pi, the best way to get started is to follow this guide.
+At this stage, this software has only been tested on Raspbian. 
 Log into your pi: default user: pi password: raspberry
 
 First Install LIBFTDI:
@@ -15,17 +20,22 @@ I recommend updating your system using the following two commands (it make take 
 
   sudo apt-get upgrade
 
-Now install libftdi- it is a USB driver
+Now install libftdi-dev (it is a USB driver)
 
   sudo apt-get install libftdi-dev
 
 
 Install Laika
 =============
+If you would like to run the latest beta version then replace all references to the 1.0.0.tar.gz file below to:
+     1.2.0-beta.tar.gz
+Note: it will build into a different directory.
+=============
 
-Change to your user direcory (you can create an installation direcory if you like but it's not necessary)
 
-  cd~
+Change to your user direcory (you can create an installation directory if you like but it's not necessary)
+
+  cd~ (this directory is /home/pi as standard)
 
 Now download the Laika software
 
@@ -51,7 +61,7 @@ And finally, reboot
 
   sudo shutdown -r now
 
-Then test by browsing to laika-1.0.0/source/examples/py_test
+Then test by browsing to laika-1.0.0/source/examples/py_test from your home directory.
 
   cd laika-1.0.0/source/examples/py_test
 
@@ -72,4 +82,6 @@ You will notice a laika-scratch link on the Desktop which starts Scratch with La
 
 If you click this link and it throws an error message as it might on the first attempt after install, simply reboot.
 
+
+	 
 
