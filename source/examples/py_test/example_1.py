@@ -37,19 +37,19 @@ if (ret == lk.EXIT_FAILURE):
     print 'could not open Laika device. Exiting...'
     sys.exit()
 
-print "Press any button to stop"
+print ("Press any button to stop")
 
 while running:
 
 	print count
-	ret = exp.dout_all(lk.MODULE_ONE, count, ack);
+	ret = exp.dout_all(lk.MODULE_ONE, count, ack)
 	count = count + 1
 	if count == 127:
 		count = 0
 		print "Press any button to stop"
 	time.sleep(.1)
 
-	ret = exp.din(lk.MODULE_ONE, buffer);
+	ret = exp.din(lk.MODULE_ONE, buffer)
 	if (buffer[0] != 15):
 		running = False
 
