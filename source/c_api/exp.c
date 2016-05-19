@@ -34,7 +34,7 @@ int ret;
 unsigned char exp_dout_all(unsigned char module_id_lower_two_bits, unsigned char data_in, unsigned int* buffer_in)
 {
 	ret = ftdi_write_data_set_chunksize(&ftdic, 5);
-	ret = ftdi_read_data_set_chunksize(&ftdic, 1);
+	ret = ftdi_read_data_set_chunksize(&ftdic, 3);
 	
 	buf[0] = SYNC_BYTE;
 	buf[1] = (EXP_ID | (module_id_lower_two_bits & MODULE_ID_MASK));				//module id
@@ -55,7 +55,7 @@ unsigned char exp_dout_all(unsigned char module_id_lower_two_bits, unsigned char
 unsigned char exp_dout_x(unsigned char module_id_lower_two_bits, unsigned char pin_in, unsigned char data_in, unsigned int* buffer_in)
 {
 	ret = ftdi_write_data_set_chunksize(&ftdic, 6);
-	ret = ftdi_read_data_set_chunksize(&ftdic, 1);
+	ret = ftdi_read_data_set_chunksize(&ftdic, 3);
 	
 	buf[0] = SYNC_BYTE;
 	buf[1] = (EXP_ID | (module_id_lower_two_bits & MODULE_ID_MASK));				//module id
@@ -77,7 +77,7 @@ unsigned char exp_dout_x(unsigned char module_id_lower_two_bits, unsigned char p
 unsigned char exp_din(unsigned char module_id_lower_two_bits, unsigned int* buffer_in)
 {
 	ret = ftdi_write_data_set_chunksize(&ftdic, 4);
-	ret = ftdi_read_data_set_chunksize(&ftdic, 1);
+	ret = ftdi_read_data_set_chunksize(&ftdic, 3);
 	
 	buf[0] = SYNC_BYTE;
 	buf[1] = (EXP_ID | (module_id_lower_two_bits & MODULE_ID_MASK));				//module id
@@ -97,7 +97,7 @@ unsigned char exp_din(unsigned char module_id_lower_two_bits, unsigned int* buff
 unsigned char exp_ain(unsigned char module_id_lower_two_bits, unsigned int* buffer_in)
 {
 	ret = ftdi_write_data_set_chunksize(&ftdic, 4);
-	ret = ftdi_read_data_set_chunksize(&ftdic, 4);
+	ret = ftdi_read_data_set_chunksize(&ftdic, 6);
 	
 	buf[0] = SYNC_BYTE;
 	buf[1] = (EXP_ID | (module_id_lower_two_bits & MODULE_ID_MASK));				//module id
@@ -120,7 +120,7 @@ unsigned char exp_ain(unsigned char module_id_lower_two_bits, unsigned int* buff
 unsigned char exp_motors(unsigned char module_id_lower_two_bits, unsigned char motor_in, unsigned char direction_in, unsigned char speed_in , unsigned int* buffer_in)
 {
 	ret = ftdi_write_data_set_chunksize(&ftdic, 7);
-	ret = ftdi_read_data_set_chunksize(&ftdic, 1);
+	ret = ftdi_read_data_set_chunksize(&ftdic, 3);
 	
 	buf[0] = SYNC_BYTE;
 	buf[1] = (EXP_ID | (module_id_lower_two_bits & MODULE_ID_MASK));				//module id
