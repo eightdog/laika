@@ -2,7 +2,7 @@
  * exp.c:
  *	Interface to Laika Explorer hardware module
  *
- * Copyright (c) 2013 Andy Bakin. <www.project-laika.com>
+ * Copyright (c) 2016 Andy Bakin. <www.project-laika.com>
  ***********************************************************************
  * This file is part of Laika:
  *	https://github.com/eightdog/laika.git
